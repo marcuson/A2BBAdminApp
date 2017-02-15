@@ -68,7 +68,7 @@ export class A2BBAuthService {
   }
 
   isValid(): boolean {
-    return this._jwtTokenHelper.isTokenExpired(this._accessToken);
+    return !this._jwtTokenHelper.isTokenExpired(this._accessToken);
   }
 
   getTokens(user: string, password: string, bodyParams: URLSearchParams): Promise<boolean> {
