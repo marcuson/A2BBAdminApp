@@ -71,6 +71,12 @@ export class A2BBAuthService {
     return !this._jwtTokenHelper.isTokenExpired(this._accessToken);
   }
 
+  reset(): void {
+    this._accessToken = null;
+    this._refreshToken = null;
+    this._lastBodyParams = null;
+  }
+
   getTokens(user: string, password: string, bodyParams: URLSearchParams): Promise<boolean> {
     this._lastBodyParams = bodyParams.clone();
 
