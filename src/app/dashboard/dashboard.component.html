@@ -6,45 +6,65 @@
   </div>
 
   <div class="row">
-    <div class="col-6">
+    <div class="col-12 col-md-6">
       <h4>Registered users</h4>
 
-      <p *ngIf="!users || users.length <= 0">
-        No user registered!
-      </p>
+      <div class="card card-block">
+        <p *ngIf="!users || users.length <= 0">
+          No user registered!
+        </p>
 
-      <table class="table table-hover table-compact">
-        <tbody>
-          <tr *ngFor="let user of users; let i = index;"
-              (click)="selectUser(user)"
-              [class.table-active]="user === selectedUser">
-            <th scope="row">{{ i }}</th>
-            <td>{{ user.userName }}</td>
-          </tr>
-        </tbody>
-      </table>
+        <table class="table table-hover table-sm table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Username</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users; let i = index;"
+                (click)="selectUser(user)"
+                [class.table-active]="user === selectedUser">
+              <th scope="row">{{ i }}</th>
+              <td>{{ user.userName }}</td>
+            </tr>
+          </tbody>
+        </table>
 
-      <button class="btn btn-primary" [disabled]="!selectedUser">Filter in/out</button>
-      <button class="btn btn-primary" [disabled]="!selectedUser" (click)="deleteSelected()">Delete</button>
+        <div>
+          <!--
+          <button class="btn btn-primary" [disabled]="!selectedUser">Filter in/out</button>
+          -->
+          <button class="btn btn-primary" [disabled]="!selectedUser" (click)="deleteSelected()">Delete</button>
+        </div>
+      </div>
     </div>
 
-    <div class="col-6">
+    <div class="col-12 col-md-6">
       <h4>Create new user</h4>
 
-      <div class="form-group">
-        <label for="user" class="sr-only">Username</label>
-        <input type="text" id="user" name="user" class="form-control" placeholder="Username" required autofocus
-            [(ngModel)]="newUserName">
+      <div class="card card-block">
+        <form (ngSubmit)="createNewUser()" name="createNewUserForm">
+          <div class="form-group">
+            <label for="user" class="sr-only">Username</label>
+            <input type="text" id="user" name="user" class="form-control" placeholder="Username" required autofocus
+                [(ngModel)]="newUserName">
+          </div>
 
-        <label for="password" class="sr-only">Password</label>
-        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required
-            [(ngModel)]="newUserPass">
+          <div class="form-group">
+            <label for="password" class="sr-only">Password</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required
+                [(ngModel)]="newUserPass">
+          </div>
+
+          <div>
+            <button class="btn btn-primary" type="submit" (submit)="createNewUser()">Create user</button>
+          </div>
+        </form>
       </div>
-
-      <button class="btn btn-primary" (click)="createNewUser()">Create user</button>
     </div>
   </div>
-
+<!--
   <div class="row">
     <div class="col-12">
       <hr />
@@ -56,4 +76,5 @@
       <h1>In/Out</h1>
     </div>
   </div>
+-->
 </div>
