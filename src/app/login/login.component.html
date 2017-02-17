@@ -11,7 +11,7 @@
         placeholder="Password" required [(ngModel)]="password" #passRef="ngModel">
 
     <button class="btn btn-lg btn-primary btn-block" type="submit"
-        (submit)="signIn()" [disabled]="!signInFormRef.form.valid">
+        [disabled]="!signInFormRef.form.valid">
       Sign in
     </button>
 
@@ -23,7 +23,7 @@
     </div>
 
     <div>
-      {{info}}
+      {{ info }}
     </div>
   </form>
 </div>
