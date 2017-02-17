@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
       if (err.error_description === 'invalid_username_or_password') {
         this.info = 'Invalid user/pass!';
       } else {
-        this.info = 'Unknown error:&nbsp;' + JSON.stringify(err);
+        this.info = 'Unknown error: ' + JSON.stringify(err);
       }
     });
   }
