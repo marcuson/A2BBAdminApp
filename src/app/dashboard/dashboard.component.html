@@ -33,9 +33,14 @@
 
         <div>
           <!--
-          <button class="btn btn-primary" [disabled]="!selectedUser">Filter in/out</button>
+          <button class="btn btn-primary" [disabled]="!selectedUser">
+            Filter in/out
+          </button>
           -->
-          <button class="btn btn-primary" [disabled]="!selectedUser" (click)="deleteSelected()">Delete</button>
+          <button class="btn btn-primary" [disabled]="!selectedUser"
+              (click)="deleteSelected()">
+            Delete
+          </button>
         </div>
       </div>
     </div>
@@ -44,21 +49,38 @@
       <h4>Create new user</h4>
 
       <div class="card card-block">
-        <form (ngSubmit)="createNewUser()" name="createNewUserForm">
+        <form name="createNewUserForm" #createNewUserForm="ngForm"
+            (submit)="createNewUser(createNewUserForm);">
           <div class="form-group">
             <label for="user" class="sr-only">Username</label>
-            <input type="text" id="user" name="user" class="form-control" placeholder="Username" required autofocus
-                [(ngModel)]="newUserName">
+            <input type="text" id="user" name="user" class="form-control"
+                placeholder="Username" required autofocus
+                [(ngModel)]="newUserName" #userRef="ngModel">
           </div>
 
           <div class="form-group">
             <label for="password" class="sr-only">Password</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required
-                [(ngModel)]="newUserPass">
+            <input type="password" id="password" name="password" class="form-control"
+                placeholder="Password" required
+                [(ngModel)]="newUserPass" #passRef="ngModel">
           </div>
 
           <div>
-            <button class="btn btn-primary" type="submit" (submit)="createNewUser()">Create user</button>
+            <button class="btn btn-primary" type="submit"
+                [disabled]="!createNewUserForm.form.valid">
+              Create user
+            </button>
+          </div>
+
+          <div [hidden]="userRef.valid || userRef.pristine" class="text-danger">
+            Name is required.
+          </div>
+          <div [hidden]="passRef.valid || passRef.pristine" class="text-danger">
+            Password is required.
+          </div>
+
+          <div *ngIf="newUserInfo" class="with-newline">
+            {{newUserInfo}}
           </div>
         </form>
       </div>

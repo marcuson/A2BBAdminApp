@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { A2BBAuthService } from '../services/a2bb-auth.service';
 import { Router } from '@angular/router';
 import { User } from '../models/user';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,6 +14,8 @@ export class DashboardComponent implements OnInit {
   newUserName: string;
   newUserPass: string;
   selectedUser: User;
+  newUserInfo: string;
+  prova: any;
 
   constructor(private _router: Router, private _a2bbAuthService: A2BBAuthService) { }
 
@@ -33,19 +36,38 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  createNewUser(): void {
+  createNewUser(form: FormGroup): void {
+    const user = new User();
+    user.userName = this.newUserName;
+    let isOk = false;
+
     this._a2bbAuthService.post('http://localhost:5000/api/admin/users', {
-      User: {
-        Username: this.newUserName
-      },
-      Password: this.newUserPass
+      user: user,
+      password: this.newUserPass
     }).then((res) => {
-      return this.refreshUsers();
+      const response = res.json();
+
+      if (response.code === 0) {
+        this.newUserInfo = 'Ok!';
+        isOk = true;
+        return this.refreshUsers();
+      }
+
+      this.newUserInfo = response.message.trim();
+      if (response.payload.errors) {
+        response.payload.errors.forEach(e => {
+          this.newUserInfo += '\n' + e.description;
+        });
+      }
+
+      isOk = false;
     }).then(() => {
-      this.newUserName = '';
-      this.newUserPass = '';
+      if (isOk) {
+        form.reset();
+      }
     }).catch((err) => {
       console.log(err);
+      this.newUserInfo = 'Unknown error: ' + JSON.stringify(err);
     });
   }
 
