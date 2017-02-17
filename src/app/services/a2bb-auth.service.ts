@@ -33,7 +33,8 @@ export class A2BBAuthService {
     });
   }
 
-  private processTokenRequest(bodyParams: URLSearchParams, resolve: (b: boolean) => void, reject: (e: any) => void): void {
+  private processTokenRequest(bodyParams: URLSearchParams, resolve: (b: boolean) => void,
+      reject: (e: any) => void): void {
     this._http.post(this._tokenEndpoint, bodyParams).toPromise().then((response) => {
       const tokenResp = response.json() as any;
       if (tokenResp.error) {
@@ -123,6 +124,15 @@ export class A2BBAuthService {
     return this.accessToken().then((token) => {
       options.headers.append('Authorization', 'Bearer ' + this._accessToken);
       return this._http.post(url, body, options).toPromise();
+    });
+  }
+
+  put(url: string, body: any, options?: RequestOptionsArgs): Promise<Response> {
+    options = this.augmentOptions(options);
+
+    return this.accessToken().then((token) => {
+      options.headers.append('Authorization', 'Bearer ' + this._accessToken);
+      return this._http.put(url, body, options).toPromise();
     });
   }
 
