@@ -3,6 +3,7 @@ import { A2BBAuthService } from '../services/a2bb-auth.service';
 import { Router } from '@angular/router';
 import { User } from '../models/user';
 import { FormGroup } from '@angular/forms';
+import { Const } from '../const';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,7 +29,7 @@ export class DashboardComponent implements OnInit {
   }
 
   refreshUsers(): void {
-    this._a2bbAuthService.get('http://localhost:5000/api/admin/users').then((res) => {
+    this._a2bbAuthService.get(Const.ID_SRV_ENDPOINT + '/api/admin/users').then((res) => {
       this.users = res.json() as User[];
     }).catch((err) => {
       console.log(err);
@@ -41,7 +42,7 @@ export class DashboardComponent implements OnInit {
     user.userName = this.newUserName;
     let isOk = false;
 
-    this._a2bbAuthService.post('http://localhost:5000/api/admin/users', {
+    this._a2bbAuthService.post(Const.ID_SRV_ENDPOINT + '/api/admin/users', {
       user: user,
       password: this.newUserPass
     }).then((res) => {
@@ -76,7 +77,7 @@ export class DashboardComponent implements OnInit {
       return;
     }
 
-    this._a2bbAuthService.delete('http://localhost:5000/api/admin/users/' +
+    this._a2bbAuthService.delete(Const.ID_SRV_ENDPOINT + '/api/admin/users/' +
         this.selectedUser.id).then((res) => {
       this.selectedUser = null;
       return this.refreshUsers();
