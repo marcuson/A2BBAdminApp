@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
 
     const bodyParams = new URLSearchParams();
     bodyParams.set('client_id', 'a2bb.ro_id_srv');
-    bodyParams.set('scope', 'IDSRV_API offline_access');
+    bodyParams.set('scope', 'IDSRV_API A2BB_API offline_access');
 
     this._authService.getTokens(this.user, this.password, bodyParams).then((b) => {
       if (b === true) {
