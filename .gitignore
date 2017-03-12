@@ -38,3 +38,5 @@ testem.log
 #System Files
 .DS_Store
 Thumbs.db
+A2BBAdminApp-win32-ia32/
+A2BBAdminApp-win32-x64/

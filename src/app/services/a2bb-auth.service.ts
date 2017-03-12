@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, URLSearchParams, RequestOptionsArgs, Response } from '@angular/http';
 import { JwtHelper } from 'angular2-jwt';
+import { Const } from '../const';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class A2BBAuthService {
-  private _idSrvEndpoint = 'http://localhost:5000';
+  private _idSrvEndpoint = Const.ID_SRV_ENDPOINT;
   private _accessToken: string = null;
   private _refreshToken: string = null;
   private _tokenEndpoint = this._idSrvEndpoint + '/connect/token';
@@ -33,7 +34,8 @@ export class A2BBAuthService {
     });
   }
 
-  private processTokenRequest(bodyParams: URLSearchParams, resolve: (b: boolean) => void, reject: (e: any) => void): void {
+  private processTokenRequest(bodyParams: URLSearchParams, resolve: (b: boolean) => void,
+      reject: (e: any) => void): void {
     this._http.post(this._tokenEndpoint, bodyParams).toPromise().then((response) => {
       const tokenResp = response.json() as any;
       if (tokenResp.error) {
@@ -68,7 +70,13 @@ export class A2BBAuthService {
   }
 
   isValid(): boolean {
-    return this._jwtTokenHelper.isTokenExpired(this._accessToken);
+    return !this._jwtTokenHelper.isTokenExpired(this._accessToken);
+  }
+
+  reset(): void {
+    this._accessToken = null;
+    this._refreshToken = null;
+    this._lastBodyParams = null;
   }
 
   getTokens(user: string, password: string, bodyParams: URLSearchParams): Promise<boolean> {
@@ -117,6 +125,15 @@ export class A2BBAuthService {
     return this.accessToken().then((token) => {
       options.headers.append('Authorization', 'Bearer ' + this._accessToken);
       return this._http.post(url, body, options).toPromise();
+    });
+  }
+
+  put(url: string, body: any, options?: RequestOptionsArgs): Promise<Response> {
+    options = this.augmentOptions(options);
+
+    return this.accessToken().then((token) => {
+      options.headers.append('Authorization', 'Bearer ' + this._accessToken);
+      return this._http.put(url, body, options).toPromise();
     });
   }
 
